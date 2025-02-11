@@ -1,0 +1,32 @@
+.custom-tooltip {
+  background-color: #f39c12 !important;
+  color: white !important;
+  font-size: 16px;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.custom-highlight {
+  border: 2px solid #f39c12 !important;
+  box-shadow: 0px 0px 10px rgba(243, 156, 18, 0.5) !important;
+}
+
+.introjs-tooltip {
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+.introjs-tooltipbuttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.introjs-tooltipbutton {
+  background-color: #f39c12 !important;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 15px;
+}
+
+.introjs-overlay {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
