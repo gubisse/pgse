@@ -10,12 +10,6 @@
   "trustedDependencies": [
     "sharp"
   ],
-  "scripts": {
-    "build": "qwik build",        
-    "build.client": "qwik build",  
-    "dev": "qwik dev",          
-    "start": "qwik start"    
-  },
   "trustedDependencies-annotation": "Needed for bun to allow running install scripts",
   "type": "module",
   "scripts": {
