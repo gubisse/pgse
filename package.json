@@ -10,6 +10,12 @@
   "trustedDependencies": [
     "sharp"
   ],
+  "scripts": {
+    "build": "qwik build",        
+    "build.client": "qwik build",  
+    "dev": "qwik dev",          
+    "start": "qwik start"    
+  },
   "trustedDependencies-annotation": "Needed for bun to allow running install scripts",
   "type": "module",
   "scripts": {
@@ -57,9 +63,5 @@
     "tippy.js": "^6.3.7",
     "uuid": "^11.0.5",
     "xlsx": "^0.18.5"
-  },
-  "scripts": {
-    "build": "qwik build"
   }
-
 }
