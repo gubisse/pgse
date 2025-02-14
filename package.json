@@ -1,6 +1,7 @@
 {
   "name": "my-qwik-empty-starter",
   "description": "Blank project with routing included",
+  "version": "1.0.0",
   "engines": {
     "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
   },
@@ -12,12 +13,12 @@
   "trustedDependencies-annotation": "Needed for bun to allow running install scripts",
   "type": "module",
   "scripts": {
+    "dev": "vite --mode ssr",
     "build": "qwik build",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.types": "tsc --incremental --noEmit",
     "deploy": "echo 'Run \"npm run qwik add\" to install a server adapter'",
-    "dev": "vite --mode ssr",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check .",
@@ -44,9 +45,17 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "bootstrap-tour": "^0.12.0",
+    "git": "^0.1.5",
+    "glob": "^9.3.5",
     "intro.js": "^7.2.0",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "lru-cache": "^11.0.2",
     "marked": "^15.0.7",
+    "ods": "^1.1.7",
     "shepherd.js": "^14.4.0",
-    "tippy.js": "^6.3.7"
+    "tippy.js": "^6.3.7",
+    "uuid": "^11.0.5",
+    "xlsx": "^0.18.5"
   }
 }

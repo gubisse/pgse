@@ -1,7 +1,9 @@
 import { component$, useSignal, $ } from "@builder.io/qwik";
-import { TecnicoDistrital } from "../components/cadastro-form/TecnicoDistrital";
-import { CadastroDiretor } from "../components/cadastro-form/DiretorPedagogico";
-import { CadastroDAP } from "../components/cadastro-form/DireAdjuPedag";
+import { TecnicoDistrital } from "../components/painel-principal-tecnico-distrital";
+import { DirectorEscolar } from "../components/painel-principal-director-escolar";
+
+import { CadastroDiretor } from "../components/DiretorPedagogico";
+import { CadastroDAP } from "../components/DireAdjuPedag";
 import { CadastroProfessor } from "../components/markdown/Cadastro-professor";
 import { iniciarGuia } from "../components/tour/guia-index";
 
@@ -32,12 +34,12 @@ export default component$(() => {
       >
         {/* Logo e Título */}
         <div class="d-flex align-items-center mb-3">
-          <img 
+          <img  width="100" height="100" 
             src="https://imagens.usp.br/wp-content/uploads/Campus-15-Foto-Marcos-Santos20101220_066-240x135.jpg" 
             alt="Logo" 
             class="me-2 rounded-circle" 
             style="width: 50px; height: 50px; object-fit: cover;"
-          />
+          ></img>
           <h5 class="mb-0">GSE</h5>
         </div>
 
@@ -46,13 +48,13 @@ export default component$(() => {
 
         {/* Botões do Menu */}
         <button class="btn btn-light w-100 mb-2" onClick$={() => (componenteAtual.value = "tecnico")}>
-          Cadastro Técnico Distrital
+          Técnico Distrital
         </button>
         <button class="btn btn-light w-100 mb-2" onClick$={() => (componenteAtual.value = "diretor")}>
-          Cadastro Diretor
+          Diretor Escolar
         </button>
         <button class="btn btn-light w-100 mb-2" onClick$={() => (componenteAtual.value = "dap")}>
-          Cadastro DAP
+          Director Adjunto Pedagogico
         </button>
         <button class="btn btn-light w-100 mb-2" onClick$={() => (componenteAtual.value = "help-cadastro-professor")}>
           Ajuda Cadastro Professor
@@ -77,26 +79,24 @@ export default component$(() => {
       {/* CONTEÚDO PRINCIPAL */}
       <div id="contentor-conteudo-apresentado" class={`p-4 flex-grow-1 ms-250 ${menuAberto.value ? 'transition-all' : ''}`}>
         <div>
-          <header class="bg-dark text-white d-flex justify-content-between align-items-center p-3">
-            <div class="d-flex align-items-center">
-              <h4 class="mb-0">Bem-vindo, {userName}</h4>
+          <header class="bg-dark text-white d-flex flex-wrap justify-content-between align-items-center p-3">
+            <div class="d-flex align-items-center flex-grow-1">
+              <h4 class="mb-0 text-truncate">Bem-vindo, {userName}</h4>
             </div>
             
-            <div class="d-flex">
-              {/* Botão para Ações do Sistema */}
-              <button class="btn btn-light me-3" onClick$={() => alert("Configurações do Sistema")}>
+            <div class="d-flex gap-2">
+              <button class="btn btn-light me-2" onClick$={() => alert("Configurações do Sistema")}>
                 Configurações
               </button>
-
-              {/* Botão de Logout */}
               <button class="btn btn-danger" onClick$={() => alert("Saindo...")}>
                 Sair
               </button>
             </div>
           </header>
+
         </div>
         {componenteAtual.value === "tecnico" && <TecnicoDistrital />}
-        {componenteAtual.value === "diretor" && <CadastroDiretor />}
+        {componenteAtual.value === "diretor" && <DirectorEscolar />}
         {componenteAtual.value === "dap" && <CadastroDAP />}
         {componenteAtual.value === "help-cadastro-professor" && <CadastroProfessor />}
       </div>

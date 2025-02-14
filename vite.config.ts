@@ -49,13 +49,13 @@ export default defineConfig(({ command, mode }): UserConfig => {
     server: {
       headers: {
         // Don't cache the server response in dev mode
-        "Cache-Control": "public, max-age=0",
+        //"Cache-Control": "public, max-age=0",
       },
     },
     preview: {
       headers: {
         // Do cache the server response in preview (non-adapter production build)
-        "Cache-Control": "public, max-age=600",
+        //"Cache-Control": "public, max-age=600",
       },
     },
   };
