@@ -2,17 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "entry.ssr.tsx", 
-      "use": "@qwik",
-      "config": {
-        "distDir": "dist"
-      }
+      "src": "src/entry.ssr.tsx",
+      "use": "@qwik"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/dist/$1"
+      "dest": "/public/$1"
     }
   ]
 }
