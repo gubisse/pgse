@@ -19,7 +19,7 @@ export default component$(() => {
       <div class="">
         Oi Ubisie como esta tsx
       </div>
-      < PainelPrincipal painel="Quero painel Ubisse" />
+      
     </div>
   );
 });
