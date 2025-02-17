@@ -13,8 +13,10 @@
   "trustedDependencies-annotation": "Needed for bun to allow running install scripts",
   "type": "module",
   "scripts": {
-    "dev": "vite --mode ssr",
-    "build": "qwik build",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.types": "tsc --incremental --noEmit",
