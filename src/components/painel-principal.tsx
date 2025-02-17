@@ -1,11 +1,11 @@
 import { component$, useSignal, $, useStore, noSerialize  } from "@builder.io/qwik";
 
 // Componente principal
-export const PainelPrincipal = component$(({painel}) => {
+export const PainelPrincipal = component$(() => {
 
   return (
     <div class="container mt-4">
-      Epaaa {painel}
+      Epaaa 
 
 
 
