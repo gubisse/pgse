@@ -1,0 +1,33 @@
+Estrutura do progecto PGSE.EDU.MZ
+
+Uma plataforma para gestao e superivionar as escola na provincia de Manica, iniciativa do ilustre dr. Jordao Pita Decacutuma, assim bordando uma parte na plataforma e-Learning para ensino secundario, que está como foco para o projecto final do curso.
+
+O sistema esta estururada em trez partes essenciais:
+Back end      - Spring boot (Java 21)
+Front end     - Qwik (latest"jan 2025) sub NODE (23.7.0)
+Base de dados - MariaDB (10)
+
+Inicialmente iraa-se desenvolver o front end...
+
+--- Tela de login (nomeDoUsuario, senhaDoUsuario) perfil»(tecnicoProvincial, tecnicoDistrital, directorEscolar e directorAdjuntoEscolar)
+
+---Tela principal personalizada para atender de acordo com o perfil do usuario logado.
+  --- Menu - apenas para para cliques como configuração, sobre o usuario, sair do sistema
+  --- Acoes - Ficam no lado direito da plataforma.
+    --- NovoProfessor - Apenas td, de e dap tem direito de mexer
+    --- NovoTecnicoDistrital - Apenas o tecnicoProvincial tem direito de mexer
+    --- NovoDirectorEscolar - Apenas tecnicoDistrital tem direito de mexer
+    --- NovoDAP - Apenas de ou dap tem direito de mexer
+    --- NovaEscola - Apenas tecnicoDistrital tem direito de mexer
+    --- ListarProfessor - Apenas td, de e dap tem direito de mexer
+    --- ListarTecnicoDistrital - Apenas tecnicoProvincial tem direito de mexer
+    --- ListarDirectorEscolar - Apenas tecnicoProvincial (de toda pronvicia) ou tecnicoDistrital ( de seu distrito) tem direito de mexer
+    --- ListarDAP - Apenas tecnicoProvincial (de toda pronvicia) ou tecnicoDistrital ( de seu distrito) ou directorEscolar (de sua escola) tem direito de mexer
+    --- listarEscola - Apenas tecnicoProvincial (de toda pronvicia) ou tecnicoDistrital ( de seu distrito) tem direito de mexer
+    --- Importar (dados do professor, de esquema indicada) apenas os que tem o direito de adicionar novo professor
+    --- Editar (dados do professor, dados dos alunos, ... [td, de, dap e escola])
+    --- Atribuição (professor para escola, td para o seu distrito, os directores sao atribuidos a partir do registro da escola)
+    --- Detalhar (dados da etidade selecionada ...[professor, td, dap e escola], podemos emitir relatorio tambme aqui)
+    --- Relatorio todos que mexe com uma lista de informação, tem o direito de relatorio
+      --- Baixar em XLSX
+      --- Baixar em PDF 

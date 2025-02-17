@@ -2,14 +2,18 @@ import { component$, useSignal, $, useStore, noSerialize  } from "@builder.io/qw
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";  // Importa o plugin autoTable
+
 import * as ODS from "ods"; // Supondo que você tenha uma biblioteca para ler arquivos ODS
 
 
 // Componente principal
-export const DirectorAdjuntoPedagogico = component$(() => {
-
+export const PainelPrincipal = component$(({painel}) => {
 
   const modalImportarXLSXAberto = useSignal(false);
+
   const arquivoAImportarSelecionado =  useSignal<File | null>(null);  // Use useSignal para o valor inicial
   const numeroDeColunasNoArquivoAImportarSelecionado = useSignal<number | null>(null);
 
@@ -29,12 +33,31 @@ export const DirectorAdjuntoPedagogico = component$(() => {
   const modalCadastroProfessorAberto = useSignal(false);
   const professorEditando = useStore({ ID: '', Nome: '', Email: '', Telefone: '', Endereço: '' });
 
-  // Dados de exemplo (professores)
-  const dados = [
-    { ID: 1, Nome: "João", Email: "joao@email.com", Telefone: "123456789", Endereço: "Rua A" },
-    { ID: 2, Nome: "Maria", Email: "maria@email.com", Telefone: "987654321", Endereço: "Rua B" },
-    { ID: 3, Nome: "Carlos", Email: "carlos@email.com", Telefone: "456123789", Endereço: "Rua C" },
+  const dadosProfessores = [
+    { ID: 1, Nome: "João", Email: "joao@email.com", Telefone: "123456789", Endereço: "Rua A", Perfil: { nivel: "Tecnico provincial", estado: "N1" } },
+    { ID: 2, Nome: "Maria", Email: "maria@email.com", Telefone: "987654321", Endereço: "Rua B", perfil: { nivel: "Director", estado: "N1" } },
+    { ID: 3, Nome: "Carlos", Email: "carlos@email.com", Telefone: "456123789", Endereço: "Rua C", perfil: { nivel: "Tecnico distrital", estado: "N1" } },
+    { ID: 4, Nome: "Ana", Email: "ana@email.com", Telefone: "321654987", Endereço: "Rua D", perfil: { nivel: null, estado: "N1" } },
+    { ID: 5, Nome: "Pedro", Email: "pedro@email.com", Telefone: "123654789", Endereço: "Rua E", perfil: { nivel: "Tecnico provincial", estado: "N1" } },
+    { ID: 6, Nome: "Juliana", Email: "juliana@email.com", Telefone: "987321654", Endereço: "Rua F", perfil: { nivel: "Director", estado: "N1" } },
+    { ID: 7, Nome: "Roberto", Email: "roberto@email.com", Telefone: "456987123", Endereço: "Rua G", perfil: { nivel: "Tecnico distrital", estado: "N2" } },
+    { ID: 8, Nome: "Cláudia", Email: "claudia@email.com", Telefone: "321987654", Endereço: "Rua H", perfil: { nivel: null, estado: "N2" } },
+    { ID: 9, Nome: "Ricardo", Email: "ricardo@email.com", Telefone: "654321987", Endereço: "Rua I", perfil: { nivel: "Tecnico provincial", estado: "N1" } },
+    { ID: 10, Nome: "Beatriz", Email: "beatriz@email.com", Telefone: "987654123", Endereço: "Rua J", perfil: { nivel: "Director", estado: "N2" } },
+    { ID: 11, Nome: "Simone", Email: "simone@email.com", Telefone: "123789654", Endereço: "Rua K", perfil: { nivel: "Tecnico distrital", estado: "N1" } },
+    { ID: 12, Nome: "Felipe", Email: "felipe@email.com", Telefone: "987123456", Endereço: "Rua L", perfil: { nivel: "Tecnico provincial", estado: "N2" } },
+    { ID: 13, Nome: "Camila", Email: "camila@email.com", Telefone: "456321654", Endereço: "Rua M", perfil: { nivel: "Director", estado: "N1" } },
+    { ID: 14, Nome: "Sandro", Email: "sandro@email.com", Telefone: "321456987", Endereço: "Rua N", perfil: { nivel: "Tecnico distrital", estado: "N1" } },
+    { ID: 15, Nome: "Patrícia", Email: "patricia@email.com", Telefone: "654123987", Endereço: "Rua O", perfil: { nivel: null, estado: "N2" } },
+    { ID: 16, Nome: "Luciano", Email: "luciano@email.com", Telefone: "987654321", Endereço: "Rua P", perfil: { nivel: "Tecnico provincial", estado: "N2" } }
   ];
+
+
+
+
+
+
+
 
   // Função para alternar visibilidade das colunas
   const toggleColuna = $((coluna: string) => {
@@ -64,20 +87,23 @@ export const DirectorAdjuntoPedagogico = component$(() => {
 
   // Função para selecionar/deselecionar todas as linhas
   const selecionarTodasLinhas = $(() => {
-    if (linhasSelecionadas.selecionados.length === dados.length) {
+    if (linhasSelecionadas.selecionados.length === dadosProfessores.length) {
       linhasSelecionadas.selecionados = [];
     } else {
-      linhasSelecionadas.selecionados = dados.map((linha) => linha.ID);
+      linhasSelecionadas.selecionados = dadosProfessores.map((linha) => linha.ID);
     }
   });
 
   // Filtragem dos dados conforme o termo de busca e colunas visíveis
-  const dadosFiltrados = dados.filter((linha) =>
+  const dadosFiltrados = dadosProfessores.filter((linha) =>
     Object.keys(linha).some((coluna) =>
       colunasVisiveis.value.has(coluna) &&
       linha[coluna].toString().toLowerCase().includes(termoBusca.value.toLowerCase())
     )
   );
+
+
+
 
   // Ordenação dos dados
   const dadosOrdenados = [...dadosFiltrados].sort((a, b) => {
@@ -91,10 +117,7 @@ export const DirectorAdjuntoPedagogico = component$(() => {
 
   //Abrir modal
 
-  const abrirModalCProfessor = $(() => {
-    componenteAtual.value = "np"
-    modalCadastroProfessorAberto.value = true;
-  });
+
 
   const abrirModalImportarXLSX = $(() => {
     modalImportarXLSXAberto.value = true;
@@ -163,40 +186,129 @@ export const DirectorAdjuntoPedagogico = component$(() => {
     XLSX.writeFile(workbook, "Professores.xlsx");
   });
 
-  // Função para exportar para PDF
-  const exportarParaPDF = $(() => {
-    componenteAtual.value = "epp"
-    const doc = new jsPDF();
-    const colunasAtuais = colunas.filter((coluna) => colunasVisiveis.value.has(coluna));
-    const linhasParaExportar = dadosOrdenados.filter((linha) =>
-      linhasSelecionadas.selecionados.length === 0 || linhasSelecionadas.selecionados.includes(linha.ID)
-    );
-    const linhas = linhasParaExportar.map((linha) => colunasAtuais.map((coluna) => linha[coluna]));
 
-    doc.text("Lista de Professores", 10, 10);
-    doc.autoTable({ head: [colunasAtuais], body: linhas, startY: 20 });
-    doc.save("Professores.pdf");
-  });
 
-  // Função para abrir o modal de edição
-  const editarProfessor = $(() => {
-    componenteAtual.value = "ep"
-    if (linhasSelecionadas.selecionados.length === 1) {
-      const professorSelecionado = dados.find((prof) => prof.ID === linhasSelecionadas.selecionados[0]);
-      if (professorSelecionado) {
-        Object.assign(professorEditando, professorSelecionado);
-        modalCadastroProfessorAberto.value = true;
-      }
-    } else {
-      alert("Selecione uma única linha para editar.");
-    }
-  });
+
 
   const salvarEdicao = $(() => {
-    const professorIndex = dados.findIndex((professor) => professor.ID === professorEditando.ID);
+    const professorIndex = dadosProfessores.findIndex((professor) => professor.ID === professorEditando.ID);
     if (professorIndex !== -1) {
       dados[professorIndex] = { ...professorEditando };
       modalCadastroProfessorAberto.value = false; // Fecha o modal após salvar a edição
+    }
+  });
+
+  const botoes = [
+  { label: "Novo professor", classe: "np", visivel: true, acao: "abrirModalCProfessor" },
+  { label: "Novo técnico distrital", classe: "ip", visivel: true, acao: "abrirModalCProfessor" },
+  { label: "Novo diretor escolar", classe: "epx", visivel: true, acao: "abrirModalCProfessor" },
+  { label: "Novo DAP", classe: "epp", visivel: true, acao: "abrirModalCProfessor" },
+  { label: "Listar professores", classe: "np", visivel: true, acao: "abrirModalCProfessor" },
+  { label: "Listar Tecnicos distritais", classe: "np", visivel: true, acao: "abrirModalCProfessor" },
+  { label: "Atribuir", classe: "np", visivel: true, acao: "abrirModalCProfessor" },
+  { label: "Detalhes", classe: "np", visivel: true, acao: "abrirModalCProfessor" },
+  { label: "Editar", classe: "ep", visivel: true, acao: "abrirModalEditarProfessor", disabled: linhasSelecionadas.selecionados.length !== 1 },
+  { label: "Importar de XLSX", classe: "ip", visivel: true, acao: "abrirModalImportarXLSX" },
+  { label: "Exportar para XLSX", classe: "epx", visivel: true, acao: "exportarParaXLSX" },
+  { label: "Exportar para PDF", classe: "epp", visivel: true, acao: "exportarParaPDF" }
+];
+
+
+
+
+  // Gestao de botoes
+  const clicarBotao = $((acao: string) => {
+    switch (acao) {
+      case "abrirModalCProfessor":
+
+        componenteAtual.value = "np"
+        modalCadastroProfessorAberto.value = true;
+
+        break;
+
+      case "abrirModalEditarProfessor":
+
+        componenteAtual.value = "ep"
+        modalCadastroProfessorAberto.value = true;
+
+        if (linhasSelecionadas.selecionados.length === 1) {
+          const professorSelecionado = dadosProfessores.find((prof) => prof.ID === linhasSelecionadas.selecionados[0]);
+          if (professorSelecionado) {
+            Object.assign(professorEditando, professorSelecionado);
+            modalCadastroProfessorAberto.value = true;
+          }
+        } else {
+          alert("Selecione uma única linha para editar.");
+        }
+
+        break;
+
+      case "exportarParaPDF":
+      componenteAtual.value = "epp";
+
+      // Verifique se há dados a serem exportados
+      if (!dadosOrdenados || dadosOrdenados.length === 0) {
+        alert("Não há dados para exportar.");
+        break;
+      }
+
+      // Criação do documento PDF
+      const doc = new jsPDF();
+
+      // Filtra as colunas visíveis
+      const colunasAtuais = colunas.filter((coluna) => colunasVisiveis.has(coluna));
+      
+      // Verifique se existem colunas visíveis
+      if (colunasAtuais.length === 0) {
+        alert("Nenhuma coluna visível para exportação.");
+        break;
+      }
+
+      // Filtra as linhas selecionadas ou todas, caso nenhuma tenha sido selecionada
+      const linhasParaExportar = dadosOrdenados.filter((linha) =>
+        linhasSelecionadas.selecionados.length === 0 || linhasSelecionadas.selecionados.includes(linha.ID)
+      );
+
+      // Se nenhuma linha for selecionada, exibe um alerta
+      if (linhasParaExportar.length === 0) {
+        alert("Nenhuma linha selecionada para exportar.");
+        break;
+      }
+
+      // Mapeia as linhas para as colunas visíveis
+      const linhas = linhasParaExportar.map((linha) =>
+        colunasAtuais.map((coluna) => linha[coluna])
+      );
+
+      // Adiciona o título ao documento
+      doc.text("Lista de Professores", 10, 10);
+
+      // Gera a tabela no PDF
+      doc.autoTable({
+        head: [colunasAtuais], // Cabeçalho com as colunas visíveis
+        body: linhas, // Linhas de dados a serem exibidas
+        startY: 20, // Inicia a tabela após o título
+        theme: 'grid', // Estilo de tabela com grid
+        margin: { top: 30 }, // Ajusta a margem superior
+        styles: {
+          font: 'Helvetica',
+          fontSize: 10,
+          cellPadding: 2,
+        },
+        headStyles: {
+          fillColor: [0, 51, 102], // Cor de fundo do cabeçalho
+          textColor: [255, 255, 255], // Cor do texto do cabeçalho
+        },
+      });
+
+      // Salva o documento PDF gerado com o nome 'Professores.pdf'
+      doc.save("Professores.pdf");
+
+      break;
+
+
+      default:
+        console.log("Ação não reconhecida");
     }
   });
 
@@ -206,6 +318,23 @@ export const DirectorAdjuntoPedagogico = component$(() => {
         {/* Seção para Gerenciar Colunas e Buscar */}
         <div class="col-md-10">
           <h5>Gerenciar Colunas</h5>
+          <p 
+              className={` ${painel === "tecnico" ? "d-block" : "d-none"}`} 
+          >
+            Este painel deve ser acessivel para apenas o tecnico provincial
+          </p>
+
+          <p 
+              className={` ${painel === "director" ? "d-block" : "d-none"}`} 
+          >
+            Este painel deve ser acessivel para apenas o tecnico distrital
+          </p>
+
+          <p 
+              className={` ${painel === "dap" ? "d-block" : "d-none"}`} 
+          >
+            Este painel deve ser acessivel para apenas o tecnico distrital
+          </p>
           <div class="mb-3 d-flex flex-wrap">
             {colunas.map((coluna) => (
               <div key={coluna} class="form-check me-3">
@@ -240,19 +369,22 @@ export const DirectorAdjuntoPedagogico = component$(() => {
                   <th>
                     <input
                       type="checkbox"
-                      checked={linhasSelecionadas.selecionados.length === dados.length}
+                      checked={linhasSelecionadas.selecionados.length === dadosProfessores.length}
                       onChange$={selecionarTodasLinhas}
                     />
                   </th>
-                  {colunas.filter((coluna) => colunasVisiveis.value.has(coluna)).map((coluna) => (
+                  {
+                    colunas.filter((coluna) => colunasVisiveis.value.has(coluna)).map((coluna) => (
                     <th key={coluna} onClick$={() => ordenarPorColuna(coluna)} style={{ cursor: "pointer" }}>
                       {coluna} {colunaOrdenacao.value === coluna ? (ordemAscendente.value ? "⬆️" : "⬇️") : ""}
                     </th>
-                  ))}
+                    ))
+                  }
                 </tr>
               </thead>
               <tbody>
-                {dadosOrdenados.map((linha, index) => (
+                {
+                  dadosOrdenados.map((linha, index) => (
                   <tr key={index}>
                     <td>
                       <input
@@ -265,7 +397,8 @@ export const DirectorAdjuntoPedagogico = component$(() => {
                       <td key={coluna}>{linha[coluna]}</td>
                     ))}
                   </tr>
-                ))}
+                  ))
+                }
               </tbody>
             </table>
           </div>
@@ -276,12 +409,18 @@ export const DirectorAdjuntoPedagogico = component$(() => {
           <h5>Ações</h5>
           <div class="g-3">
             
-            <button className={`btn  mt-2 w-100 ${componenteAtual.value === "np" ? "btn-success" : "btn-outline-primary"}`} onClick$={abrirModalCProfessor}>Novo professor</button>
-            <button className={`btn  mt-2 w-100 ${componenteAtual.value === "ip" ? "btn-success" : "btn-outline-primary"}`} onClick$={abrirModalImportarXLSX}>Importar de XLSX</button>
-            <button className={`btn  mt-2 w-100 ${componenteAtual.value === "epx" ? "btn-success" : "btn-outline-primary"}`} onClick$={exportarParaXLSX}>Exportar para XLSX</button>
-            <button className={`btn  mt-2 w-100 ${componenteAtual.value === "epp" ? "btn-success" : "btn-outline-primary"}`} onClick$={exportarParaPDF}>Exportar para PDF</button>
-            <button className={`btn  mt-2 w-100 ${componenteAtual.value === "ep" ? "btn-success" : "btn-outline-primary"}`} onClick$={editarProfessor} disabled={linhasSelecionadas.selecionados.length !== 1}>Editar</button>
-
+            {botoes.map((botao, index) => (
+              botao.visivel && (
+                <button
+                  key={index}
+                  className={`btn mt-2 w-100 ${componenteAtual.value === botao.classe ? "btn-success" : "btn-outline-primary"}`}
+                  onClick$={() => clicarBotao(botao.acao)}
+                  disabled={botao.disabled}
+                >
+                  {botao.label}
+                </button>
+              )
+            ))}
           </div>
         </div>
       </div>
@@ -292,19 +431,25 @@ export const DirectorAdjuntoPedagogico = component$(() => {
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Editar Professor</h5>
+                <h5 class="modal-title">{componenteAtual.value === "np" ?  "Cadastrar novo professor" : "Editar dados do professor"}</h5>
                 <button type="button" class="btn-close" onClick$={fecharModalCProfessor}></button>
               </div>
               <div class="modal-body">
                 {colunas.slice(1).map((coluna) => (
-                  <input
-                    key={coluna}
-                    class="form-control mb-2"
-                    value={professorEditando[coluna]}
-                    onInput$={(e) => (professorEditando[coluna] = e.target.value)}
-                  />
+                  <div class="form-floating mb-2" key={coluna}>
+                    <input
+                      id={coluna}
+                      class="form-control"
+                      value={componenteAtual.value === "np" ?  "" : professorEditando[coluna] || ''} // Garante que o valor seja uma string vazia se não houver valor
+                      onInput$={(e) => { 
+                        professorEditando[coluna] = e.target.value; // Atualiza o valor do campo ao digitar
+                      }}
+                    />
+                    <label for={coluna}>{coluna}</label>
+                  </div>
                 ))}
               </div>
+
               <div class="modal-footer">
                 <button class="btn btn-secondary" onClick$={fecharModalCProfessor}>Cancelar</button>
                 <button class="btn btn-success" onClick$={salvarEdicao}>Salvar</button>

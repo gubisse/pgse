@@ -1,9 +1,8 @@
 import { component$, useSignal, $ } from "@builder.io/qwik";
-import { TecnicoDistrital } from "../components/painel-principal-tecnico-distrital";
-import { DirectorEscolar } from "../components/painel-principal-director-escolar";
 
-import { CadastroDiretor } from "../components/DiretorPedagogico";
-import { CadastroDAP } from "../components/DireAdjuPedag";
+import { PainelPrincipal } from "../components/painel-principal";
+import { Dash } from "../components/dash";
+
 import { CadastroProfessor } from "../components/markdown/Cadastro-professor";
 import { iniciarGuia } from "../components/tour/guia-index";
 
@@ -47,10 +46,11 @@ export default component$(() => {
         <h5 class="text-center mb-3">Menu</h5>
 
         {/* Botões do Menu */}
+        {/* Nao esta em funcinamento 
         <button class="btn btn-light w-100 mb-2" onClick$={() => (componenteAtual.value = "tecnico")}>
           Técnico Distrital
         </button>
-        <button class="btn btn-light w-100 mb-2" onClick$={() => (componenteAtual.value = "diretor")}>
+        <button class="btn btn-light w-100 mb-2" onClick$={() => (componenteAtual.value = "director")}>
           Diretor Escolar
         </button>
         <button class="btn btn-light w-100 mb-2" onClick$={() => (componenteAtual.value = "dap")}>
@@ -59,7 +59,9 @@ export default component$(() => {
         <button class="btn btn-light w-100 mb-2" onClick$={() => (componenteAtual.value = "help-cadastro-professor")}>
           Ajuda Cadastro Professor
         </button>
-        
+        */}
+        <p>Este menu foi retirado devido a sua inutilidade, a permissao do usuario ee que determinam o que o deve ser exibido para usuario, para melhorar UX deve ser muito simples, podes olhar para o lado dreito, tem o painel de ACOESS do usuario, para os acessar va para o arquivo painel-principal.tsx que estaa em componets </p>
+
         {/* Botão de Guia */}
         <button id="btn-iniciar-guia" class="btn btn-primary w-100 mt-3" onClick$={() => iniciarGuia()}>
           Iniciar Guia da Página
@@ -95,10 +97,9 @@ export default component$(() => {
           </header>
 
         </div>
-        {componenteAtual.value === "tecnico" && <TecnicoDistrital />}
-        {componenteAtual.value === "diretor" && <DirectorEscolar />}
-        {componenteAtual.value === "dap" && <CadastroDAP />}
-        {componenteAtual.value === "help-cadastro-professor" && <CadastroProfessor />}
+
+      {["tecnico", "director", "dap"].includes(componenteAtual.value) && (<PainelPrincipal painel={componenteAtual.value} /> )}
+      {componenteAtual.value === "help-cadastro-professor" && <CadastroProfessor />}
       </div>
 
     </div>

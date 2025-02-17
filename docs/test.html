@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - PGSE</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+        }
+        /* Menu Lateral */
+        .menu-lateral {
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+        }
+        .menu-lateral ul {
+            list-style: none;
+            padding: 0;
+        }
+        .menu-lateral ul li {
+            padding: 10px 0;
+            cursor: pointer;
+        }
+        .menu-lateral ul li:hover {
+            background: #495057;
+        }
+        /* Conteúdo Principal */
+        .conteudo {
+            flex: 1;
+            padding: 20px;
+        }
+        .acoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menu Lateral -->
+    <div class="menu-lateral">
+        <h4>PGSE</h4>
+        <ul>
+            <li>Configurações</li>
+            <li>Sobre o Usuário</li>
+            <li onclick="logout()">Sair</li>
+        </ul>
+    </div>
+
+    <!-- Área Principal -->
+    <div class="conteudo">
+        <h2>Dashboard</h2>
+        <p>Bem-vindo, <span id="usuarioNome">Usuário</span></p>
+
+        <!-- Botões de Ação -->
+        <div class="acoes">
+            <button class="btn btn-primary" id="btnNovoProfessor">Novo Professor</button>
+            <button class="btn btn-primary" id="btnNovoTecnico" style="display: none;">Novo Técnico Distrital</button>
+            <button class="btn btn-primary" id="btnNovoDiretor" style="display: none;">Novo Diretor Escolar</button>
+            <button class="btn btn-primary" id="btnNovaEscola" style="display: none;">Nova Escola</button>
+        </div>
+    </div>
+
+    <script>
+        // Simulando o usuário logado (perfil)
+        const usuarioLogado = {
+            nome: "João",
+            perfil: "Técnico Distrital" // Pode ser "Técnico Provincial", "Diretor Escolar", etc.
+        };
+
+        document.getElementById("usuarioNome").innerText = usuarioLogado.nome;
+
+        // Exibir botões com base no perfil
+        function configurarDashboard() {
+            if (usuarioLogado.perfil === "Técnico Provincial") {
+                document.getElementById("btnNovoTecnico").style.display = "inline-block";
+            }
+            if (usuarioLogado.perfil === "Técnico Distrital") {
+                document.getElementById("btnNovoDiretor").style.display = "inline-block";
+                document.getElementById("btnNovaEscola").style.display = "inline-block";
+            }
+        }
+
+        function logout() {
+            alert("Saindo do sistema...");
+            window.location.href = "login.html"; // Redireciona para a tela de login
+        }
+
+        configurarDashboard();
+    </script>
+
+</body>
+</html>
