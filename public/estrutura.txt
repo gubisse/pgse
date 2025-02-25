@@ -1,0 +1,12 @@
+📂 src
+ ├── 📂 utilidade
+ │    ├── 📂 professor
+ │    │    ├── 📄 ProfessoresContext.ts
+ │    │    ├── 📄 ProfessoresProvider.tsx  <-- ⚠️ Esse arquivo precisa existir aqui
+ │    ├── 📂 aluno
+ │    │    ├── 📄 AlunosContext.ts
+ │    │    ├── 📄 AlunosProvider.tsx
+ │    ├── 📄 AppProvider.tsx  <-- Esse arquivo importa os Providers
+ ├── 📂 routes
+ │    ├── 📄 index.tsx
+ ├── 📄 root.tsx
