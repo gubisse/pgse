@@ -10,10 +10,8 @@ export default component$(() => {
   const navigate = useNavigate();
 
   const handleLogout = $(async () => {
-    console.log('Fazendo logout, auth.user antes:', auth.user);
-    await setAuthUser(auth, null); // Redefine auth.user para null
-    console.log('Logout concluído, auth.user agora:', auth.user);
-    navigate('/'); // Redireciona para login
+    await setAuthUser(auth, null);
+    navigate('/');
   });
 
   return (
@@ -21,7 +19,7 @@ export default component$(() => {
       <Header />
       <div style="max-width: 600px; margin: 50px auto; padding: 20px; background-color: #f8f9fa; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <h1 style="text-align: center; color: #343a40; margin-bottom: 20px;">Dashboard da Escola</h1>
-        <p style="text-align: center; color: #495057;">Bem-vindo, {auth.user?.role === 'diretor' ? 'Diretor' : 'Adjunto'}!</p>
+        <p style="text-align: center; color: #495057;">Bem-vindo, {auth.user?.role === 'diretor' ? 'Diretor' : 'Adjunto'} {auth.user?.name}!</p>
         <button
           onClick$={handleLogout}
           style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #dc3545; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; transition: background-color 0.3s;"

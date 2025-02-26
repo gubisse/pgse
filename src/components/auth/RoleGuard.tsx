@@ -18,10 +18,10 @@ export default component$(({ allowedRoles }: { allowedRoles: string[] }) => {
     }
   });
 
-  console.log('Renderizando RoleGuard, auth.user:', auth.user);
+  console.log('Renderizando RoleGuard, auth.user:',  auth.user);
 
   if (!auth.user) {
-    return <div>Redirecionando para o login...</div>;
+    return <div>Redirecionando para o login... {auth.user}</div>;
   }
 
   if (!allowedRoles.includes(auth.user.role)) {

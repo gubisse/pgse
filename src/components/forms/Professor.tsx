@@ -12,7 +12,7 @@ export default component$(() => {
       body: JSON.stringify({ name: name.value, schoolId: 'some-school-id' }),
     });
     if (response.ok) {
-      navigate('/dashboard/school');
+      navigate('/dashboard/escola');
     }
   });
 

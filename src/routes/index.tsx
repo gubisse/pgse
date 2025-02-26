@@ -1,6 +1,8 @@
-import { component$, useSignal, useTask$, $ } from '@builder.io/qwik';
+import { component$, useSignal, $ } from '@builder.io/qwik';
 import { useNavigate } from '@builder.io/qwik-city';
 import { useAuth, setAuthUser } from '../context/auth';
+import { User } from '../models/User'; // Importa o modelo User
+
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
 
@@ -11,19 +13,7 @@ export default component$(() => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  useTask$(() => {
-    if (auth.user) {
-      console.log('Usuário já logado, redirecionando para dashboard:', auth.user.role);
-      switch (auth.user.role) {
-        case 'provincial': navigate('/dashboard/provincial'); break;
-        case 'distrital': navigate('/dashboard/district'); break;
-        case 'diretor':
-        case 'adjunto': navigate('/dashboard/escola'); break;
-        default: navigate('/');
-      }
-    }
-  });
-
+ 
   const handleLogin = $(async () => {
     try {
       const user = await fakeLogin(email.value, password.value);
@@ -98,15 +88,15 @@ export default component$(() => {
   );
 });
 
-const fakeLogin = $(async (email: string, password: string) => {
+const fakeLogin = $(async (email: string, password: string): Promise<User> => {
   if (email === 'provincial@example.com' && password === '123') {
-    return { role: 'provincial' };
+    return { id: '1', name: 'Técnico Provincial', email, role: 'provincial' };
   } else if (email === 'distrital@example.com' && password === '123') {
-    return { role: 'distrital' };
+    return { id: '2', name: 'Técnico Distrital', email, role: 'distrital' };
   } else if (email === 'diretor@example.com' && password === '123') {
-    return { role: 'diretor' };
+    return { id: '3', name: 'Diretor', email, role: 'diretor' };
   } else if (email === 'adjunto@example.com' && password === '123') {
-    return { role: 'adjunto' };
+    return { id: '4', name: 'Adjunto', email, role: 'adjunto' };
   }
   throw new Error('Credenciais inválidas');
 });
